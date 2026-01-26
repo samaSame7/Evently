@@ -1,5 +1,6 @@
 import 'package:evently_6/ui/utils/app_assets.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
+import 'package:evently_6/ui/utils/app_dialogs.dart';
 import 'package:evently_6/ui/utils/app_routes.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
 import 'package:evently_6/ui/widgets/app_button.dart';
@@ -7,9 +8,14 @@ import 'package:evently_6/ui/widgets/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -34,7 +40,7 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 16),
               AppTextField(
                 hintText: "Enter your password",
-                isPassword: true,
+                //isPassword: false,
                 preIcon: SvgPicture.asset(AppAssets.icLockSvg),
                 suffixIcon: SvgPicture.asset(AppAssets.icEyeClosedSvg),
               ),
@@ -47,10 +53,10 @@ class LoginScreen extends StatelessWidget {
                 textAlign: TextAlign.end,
               ),
               SizedBox(height: 48),
-              AppButton(title: "Login", onPress: () {}),
+              buildLoginButton(),
               SizedBox(height: 48),
               InkWell(
-                onTap: ()=> Navigator.push(context, AppRoutes.signupScreen),
+                onTap: () => Navigator.push(context, AppRoutes.signupScreen),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -79,7 +85,7 @@ class LoginScreen extends StatelessWidget {
                 onPress: () {},
                 backColor: AppColors.white,
                 textStyle: AppTextStyles.blue18Medium,
-                 icon: Icon(Icons.g_mobiledata_outlined),
+                icon: Icon(Icons.g_mobiledata_outlined),
               ),
             ],
           ),
@@ -87,4 +93,21 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
+  AppButton buildLoginButton() => AppButton(
+    title: "Login",
+    onPress: () async {
+      ShowLoading(context);
+      await Future.delayed(Duration(seconds: 1));
+      Navigator.pop(context);
+      ShowMessage(
+        context,
+        "Please try again later...",
+        posText: "Ok",
+        onPosClick: () {
+          Navigator.pop(context);
+        },
+      );
+    },
+  );
 }
