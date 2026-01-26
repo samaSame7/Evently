@@ -9,6 +9,7 @@ abstract final class AppTextStyles{
   static const TextStyle blue14Regular = TextStyle(color: AppColors.blue, fontWeight: FontWeight.w400, fontSize: 14);
   static const TextStyle blue18Medium = TextStyle(color: AppColors.blue, fontWeight: FontWeight.w500, fontSize: 18);
   static const TextStyle white18Medium = TextStyle(color: AppColors.white, fontWeight: FontWeight.w500, fontSize: 18);
+  static const TextStyle white14Medium = TextStyle(color: AppColors.white, fontSize: 14);
   static const TextStyle black16Medium = TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 16);
   static const TextStyle black14Medium = TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 14);
   static const TextStyle black20SemiBold = TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 20);
