@@ -2,6 +2,7 @@ import 'package:evently_6/ui/screens/navigation_screen/tabs/favorite_tab/favorit
 import 'package:evently_6/ui/screens/navigation_screen/tabs/home_tab/home_tab.dart';
 import 'package:evently_6/ui/screens/navigation_screen/tabs/profile_tab/profile_tab.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
+import 'package:evently_6/ui/utils/app_routes.dart';
 import 'package:flutter/material.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   FloatingActionButton buildFloatingActionButton() {
     return FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {Navigator.push(context, AppRoutes.addEventScreen);},
         shape: CircleBorder(),
         backgroundColor: AppColors.blue,
         child: Icon(Icons.add, color: AppColors.white,),

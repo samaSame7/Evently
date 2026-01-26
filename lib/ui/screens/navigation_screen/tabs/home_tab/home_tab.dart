@@ -19,7 +19,7 @@ class HomeTab extends StatelessWidget {
         children: [
           buildScreenHeader(),
           Text("Sama Sameh", style: AppTextStyles.black20SemiBold),
-          SizedBox(height: 15,),
+          SizedBox(height: 15),
           buildCategoriesTabBar(),
           buildEventsList(),
         ],

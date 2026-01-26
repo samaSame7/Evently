@@ -9,11 +9,13 @@ class AppTextField extends StatelessWidget {
     this.suffixIcon,
     required this.hintText,
     this.isPassword = false,
+    this.minLine = 1,
   });
   final Widget? preIcon;
   final Widget? suffixIcon;
   final String hintText;
   final bool isPassword;
+  final int minLine;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,8 @@ class AppTextField extends StatelessWidget {
     );
     return TextField(
       obscureText: isPassword,
+      maxLines: minLine + 1,
+      minLines: minLine,
       decoration: InputDecoration(
         prefixIcon: preIcon,
         suffixIcon: suffixIcon,
