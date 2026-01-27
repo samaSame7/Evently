@@ -1,4 +1,5 @@
 import 'package:evently_6/ui/data_models/category_dm.dart';
+import 'package:evently_6/ui/data_models/user_dm.dart';
 import 'package:evently_6/ui/utils/app_assets.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
 import 'package:evently_6/ui/utils/app_constants.dart';
@@ -19,7 +20,7 @@ class HomeTab extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           buildScreenHeader(),
-          Text("Sama Sameh", style: AppTextStyles.black20SemiBold),
+          Text(UserDm.currentUser!.name, style: AppTextStyles.black20SemiBold),
           SizedBox(height: 15),
           buildCategoriesTabBar(),
           buildEventsList(),
@@ -61,6 +62,7 @@ class HomeTab extends StatelessWidget {
       icon: Icons.bike_scooter_sharp,
     );
     EventDm event = EventDm(
+      ownerId: "",
       title: "Sports",
       description:
           "my sports my sports my sport sports my sports my sports my sports my sports my sports ",

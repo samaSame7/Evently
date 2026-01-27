@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evently_6/ui/data_models/user_dm.dart';
 import 'package:evently_6/ui/utils/app_assets.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
 import 'package:evently_6/ui/utils/app_dialogs.dart';
@@ -100,6 +102,19 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  Future<UserDm> getUserFromFirestore(String uid) async {
+    var usersCollection = FirebaseFirestore.instance.collection("Users");
+    DocumentSnapshot snapshot = await usersCollection.doc(uid).get();
+    Map json = snapshot.data() as Map;
+    UserDm user = UserDm(
+      id: uid,
+      name: json['name'],
+      email: emailController.text,
+      phoneNumber: json['phoneNumber'],
+    );
+    return user;
+  }
+
   AppButton buildLoginButton() => AppButton(
     title: "Login",
     onPress: () async {
@@ -110,6 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
               email: emailController.text,
               password: passwordController.text,
             );
+        UserDm.currentUser = await getUserFromFirestore(credential.user!.uid);
         Navigator.pop(context);
         Navigator.push(context, AppRoutes.navigationScreen);
       } on FirebaseAuthException catch (e) {

@@ -1,11 +1,13 @@
 import 'category_dm.dart';
 
 class EventDm {
+  String ownerId;
   String title;
   String description;
   DateTime dateTime;
   CategoryDm category;
   EventDm({
+    required this.ownerId,
     required this.title,
     required this.description,
     required this.category,

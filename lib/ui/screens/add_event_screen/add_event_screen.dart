@@ -1,4 +1,5 @@
 import 'package:evently_6/ui/data_models/category_dm.dart';
+import 'package:evently_6/ui/data_models/event_dm.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
 import 'package:evently_6/ui/utils/app_constants.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
@@ -18,6 +19,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
   CategoryDm selectedCategory = AppConstants.customCategories[0];
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
+  TextEditingController title = TextEditingController();
+  TextEditingController description = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +56,14 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       SizedBox(height: 16),
                       Text("Title", style: AppTextStyles.black16Medium),
                       SizedBox(height: 8),
-                      AppTextField(hintText: "Event Title"),
+                      AppTextField(hintText: "Event Title", controller: title),
                       SizedBox(height: 16),
                       Text("Description", style: AppTextStyles.black16Medium),
                       SizedBox(height: 8),
                       AppTextField(
                         hintText: "Event Description....",
                         minLine: 4,
+                        controller: description,
                       ),
                       SizedBox(height: 16),
                       buildChooseDateRow(),
