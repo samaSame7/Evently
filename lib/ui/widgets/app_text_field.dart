@@ -10,12 +10,14 @@ class AppTextField extends StatelessWidget {
     required this.hintText,
     this.isPassword = false,
     this.minLine = 1,
+    this.controller,
   });
   final Widget? preIcon;
   final Widget? suffixIcon;
   final String hintText;
   final bool isPassword;
   final int minLine;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class AppTextField extends StatelessWidget {
     );
     return TextField(
       obscureText: isPassword,
-      maxLines: minLine + 1,
+      maxLines: minLine,
       minLines: minLine,
       decoration: InputDecoration(
         prefixIcon: preIcon,
@@ -43,6 +45,7 @@ class AppTextField extends StatelessWidget {
         prefixIconConstraints: BoxConstraints(maxWidth: 24, maxHeight: 24),
         suffixIconConstraints: BoxConstraints(maxWidth: 24, maxHeight: 24),
       ),
+      controller: controller,
       cursorColor: AppColors.blue,
     );
   }

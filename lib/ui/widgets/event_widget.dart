@@ -1,6 +1,6 @@
 import 'package:evently_6/ui/utils/app_colors.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
-import 'package:evently_6/ui/widgets/app_dms.dart';
+import 'package:evently_6/ui/data_models/event_dm.dart';
 import 'package:flutter/material.dart';
 
 class EventWidget extends StatelessWidget {
@@ -29,7 +29,7 @@ class EventWidget extends StatelessWidget {
     );
   }
 
-  buildEventDate() => Align(
+  Widget buildEventDate() => Align(
     alignment: Alignment.topLeft,
     child: Container(
       padding: EdgeInsets.all(8),
@@ -45,7 +45,7 @@ class EventWidget extends StatelessWidget {
     ),
   );
 
-  buildEventTitle() {
+  Widget buildEventTitle() {
     return Container(
       padding: EdgeInsets.all(8),
       margin: EdgeInsets.all(8),
@@ -64,9 +64,7 @@ class EventWidget extends StatelessWidget {
             ),
           ),
           Icon(
-            event.isFavorite
-                ? Icons.favorite_outlined
-                : Icons.favorite_border_outlined,
+            false ? Icons.favorite_outlined : Icons.favorite_border_outlined,
             color: AppColors.blue,
           ),
         ],

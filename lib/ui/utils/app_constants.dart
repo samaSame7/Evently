@@ -1,5 +1,5 @@
+import 'package:evently_6/ui/data_models/category_dm.dart';
 import 'package:evently_6/ui/utils/app_assets.dart';
-import 'package:evently_6/ui/widgets/app_dms.dart';
 import 'package:flutter/material.dart';
 
 abstract final class AppConstants {

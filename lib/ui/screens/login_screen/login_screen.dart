@@ -5,6 +5,7 @@ import 'package:evently_6/ui/utils/app_routes.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
 import 'package:evently_6/ui/widgets/app_button.dart';
 import 'package:evently_6/ui/widgets/app_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -16,6 +17,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -36,13 +40,15 @@ class _LoginScreenState extends State<LoginScreen> {
               AppTextField(
                 hintText: "Enter your Email",
                 preIcon: SvgPicture.asset(AppAssets.icEmailSvg),
+                controller: emailController,
               ),
               SizedBox(height: 16),
               AppTextField(
                 hintText: "Enter your password",
-                //isPassword: false,
+                isPassword: true,
                 preIcon: SvgPicture.asset(AppAssets.icLockSvg),
                 suffixIcon: SvgPicture.asset(AppAssets.icEyeClosedSvg),
+                controller: passwordController,
               ),
               SizedBox(height: 8),
               Text(
@@ -97,17 +103,36 @@ class _LoginScreenState extends State<LoginScreen> {
   AppButton buildLoginButton() => AppButton(
     title: "Login",
     onPress: () async {
-      ShowLoading(context);
-      await Future.delayed(Duration(seconds: 1));
-      Navigator.pop(context);
-      ShowMessage(
-        context,
-        "Please try again later...",
-        posText: "Ok",
-        onPosClick: () {
-          Navigator.pop(context);
-        },
-      );
+      try {
+        ShowLoading(context);
+        final credential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+              email: emailController.text,
+              password: passwordController.text,
+            );
+        Navigator.pop(context);
+        Navigator.push(context, AppRoutes.navigationScreen);
+      } on FirebaseAuthException catch (e) {
+        Navigator.pop(context);
+        var message = "";
+        if (e.code == 'user-not-found') {
+          message = 'No user found for that email.';
+        } else if (e.code == 'wrong-password') {
+          message = 'Wrong password provided for that user.';
+        } else {
+          message =
+              e.message ?? "Something went wrong, please, try again later";
+        }
+        ShowMessage(
+          context,
+          message,
+          title: "Error",
+          posText: "Ok",
+          onPosClick: () {
+            Navigator.pop(context);
+          },
+        );
+      }
     },
   );
 }

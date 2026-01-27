@@ -1,8 +1,9 @@
+import 'package:evently_6/ui/data_models/category_dm.dart';
 import 'package:evently_6/ui/utils/app_assets.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
 import 'package:evently_6/ui/utils/app_constants.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
-import 'package:evently_6/ui/widgets/app_dms.dart';
+import 'package:evently_6/ui/data_models/event_dm.dart';
 import 'package:evently_6/ui/widgets/categories_tab_bar.dart';
 import 'package:evently_6/ui/widgets/event_widget.dart';
 import 'package:flutter/material.dart';
@@ -49,9 +50,7 @@ class HomeTab extends StatelessWidget {
   Widget buildCategoriesTabBar() {
     return CategoriesTabBar(
       categories: AppConstants.allCategories,
-      onClick: (CategoryDm category) {
-        print(category.name);
-      },
+      onClick: (CategoryDm category) {},
     );
   }
 
@@ -67,7 +66,6 @@ class HomeTab extends StatelessWidget {
           "my sports my sports my sport sports my sports my sports my sports my sports my sports ",
       category: category,
       dateTime: DateTime.now(),
-      isFavorite: true,
     );
     return Expanded(
       child: ListView.builder(
