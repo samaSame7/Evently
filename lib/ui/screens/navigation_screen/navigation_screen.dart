@@ -30,11 +30,13 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   FloatingActionButton buildFloatingActionButton() {
     return FloatingActionButton(
-        onPressed: () {Navigator.push(context, AppRoutes.addEventScreen);},
-        shape: CircleBorder(),
-        backgroundColor: AppColors.blue,
-        child: Icon(Icons.add, color: AppColors.white,),
-      );
+      onPressed: () {
+        Navigator.push(context, AppRoutes.addEventScreen);
+      },
+      shape: CircleBorder(),
+      backgroundColor: AppColors.blue,
+      child: Icon(Icons.add, color: AppColors.white),
+    );
   }
 
   Widget buildBottomNavigationBar() => Theme(
@@ -47,15 +49,20 @@ class _NavigationScreenState extends State<NavigationScreen> {
         setState(() {
           selectedTap = index;
         });
-
       },
       items: [
-        buildBottomNavigationBarItem(selectedTap==0? Icons.home_filled: Icons.home_outlined, "Home"),
-        buildBottomNavigationBarItem(selectedTap==1?
-          Icons.favorite: Icons.favorite_border_outlined,
+        buildBottomNavigationBarItem(
+          selectedTap == 0 ? Icons.home_filled : Icons.home_outlined,
+          "Home",
+        ),
+        buildBottomNavigationBarItem(
+          selectedTap == 1 ? Icons.favorite : Icons.favorite_border_outlined,
           "Favorite",
         ),
-        buildBottomNavigationBarItem(selectedTap==2?Icons.person_2: Icons.person_2_outlined, "Profile"),
+        buildBottomNavigationBarItem(
+          selectedTap == 2 ? Icons.person_2 : Icons.person_2_outlined,
+          "Profile",
+        ),
       ],
     ),
   );

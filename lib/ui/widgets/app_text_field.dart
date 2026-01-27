@@ -11,6 +11,7 @@ class AppTextField extends StatelessWidget {
     this.isPassword = false,
     this.minLine = 1,
     this.controller,
+    this.validator,
   });
   final Widget? preIcon;
   final Widget? suffixIcon;
@@ -18,6 +19,7 @@ class AppTextField extends StatelessWidget {
   final bool isPassword;
   final int minLine;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class AppTextField extends StatelessWidget {
       borderSide: BorderSide(color: AppColors.grey2, width: 1),
       borderRadius: BorderRadius.circular(16),
     );
-    return TextField(
+    return TextFormField(
       obscureText: isPassword,
       maxLines: minLine,
       minLines: minLine,
@@ -47,6 +49,8 @@ class AppTextField extends StatelessWidget {
       ),
       controller: controller,
       cursorColor: AppColors.blue,
+      validator: validator,
+      autovalidateMode: AutovalidateMode.onUnfocus,
     );
   }
 }

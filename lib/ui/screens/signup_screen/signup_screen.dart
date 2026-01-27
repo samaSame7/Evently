@@ -23,6 +23,7 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  var key = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,78 +33,116 @@ class _SignupScreenState extends State<SignupScreen> {
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Image.asset(AppAssets.appLogo),
-                SizedBox(height: 32),
-                Text(
-                  "Create your account",
-                  style: AppTextStyles.blue24SemiBold,
-                ),
-                SizedBox(height: 24),
-                AppTextField(
-                  hintText: "Enter your name",
-                  preIcon: SvgPicture.asset(AppAssets.icPersonSvg),
-                  controller: nameController,
-                ),
-                SizedBox(height: 16),
-                AppTextField(
-                  hintText: "Enter your phone number",
-                  preIcon: SvgPicture.asset(AppAssets.icPersonSvg),
-                  controller: phoneController,
-                ),
-                SizedBox(height: 16),
-                AppTextField(
-                  hintText: "Enter your Email",
-                  preIcon: SvgPicture.asset(AppAssets.icEmailSvg),
-                  controller: emailController,
-                ),
-                SizedBox(height: 16),
-                AppTextField(
-                  hintText: "Enter your password",
-                  isPassword: true,
-                  preIcon: SvgPicture.asset(AppAssets.icLockSvg),
-                  suffixIcon: SvgPicture.asset(AppAssets.icEyeClosedSvg),
-                  controller: passwordController,
-                ),
-                SizedBox(height: 16),
-                AppTextField(
-                  hintText: "Confirm your password",
-                  isPassword: true,
-                  preIcon: SvgPicture.asset(AppAssets.icLockSvg),
-                  suffixIcon: SvgPicture.asset(AppAssets.icEyeClosedSvg),
-                ),
-                SizedBox(height: 48),
-                buildSignupButton(),
-                SizedBox(height: 32),
-                InkWell(
-                  onTap: () => Navigator.pop(context),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Already have an account?",
-                        style: AppTextStyles.grey14Regular,
-                      ),
-                      Text(
-                        "Login",
-                        style: AppTextStyles.blue14SemiBold.copyWith(
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ],
+            child: Form(
+              key: key,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Image.asset(AppAssets.appLogo),
+                  SizedBox(height: 32),
+                  Text(
+                    "Create your account",
+                    style: AppTextStyles.blue24SemiBold,
                   ),
-                ),
-                SizedBox(height: 32),
-                Text(
-                  "or",
-                  style: AppTextStyles.blue24SemiBold,
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(height: 32),
-                buildGoogleSigninButton(),
-              ],
+                  SizedBox(height: 24),
+                  AppTextField(
+                    hintText: "Enter your name",
+                    preIcon: SvgPicture.asset(AppAssets.icPersonSvg),
+                    controller: nameController,
+                    validator: (text) {
+                      if (text!.isEmpty) return "Please enter your name";
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  AppTextField(
+                    hintText: "Enter your phone number",
+                    preIcon: SvgPicture.asset(AppAssets.icPersonSvg),
+                    controller: phoneController,
+                    validator: (text) {
+                      if (text!.isEmpty) {
+                        return "Please enter your phone number";
+                      }
+                      if (text.length < 11) {
+                        return "Please enter a valid phone number";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  AppTextField(
+                    hintText: "Enter your Email",
+                    preIcon: SvgPicture.asset(AppAssets.icEmailSvg),
+                    controller: emailController,
+                    validator: (text) {
+                      if (text!.isEmpty) return "Please enter your email";
+                      var isValid = RegExp(
+                        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+                      ).hasMatch(text);
+                      if (!isValid) return "Please write a valid email";
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  AppTextField(
+                    hintText: "Enter your password",
+                    isPassword: true,
+                    preIcon: SvgPicture.asset(AppAssets.icLockSvg),
+                    suffixIcon: SvgPicture.asset(AppAssets.icEyeClosedSvg),
+                    controller: passwordController,
+                    validator: (text) {
+                      if (text!.isEmpty) return "Please enter a password";
+                      if (text.length < 6) {
+                        return "Password can not be less than 6 digits";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 16),
+                  AppTextField(
+                    hintText: "Confirm your password",
+                    isPassword: true,
+                    preIcon: SvgPicture.asset(AppAssets.icLockSvg),
+                    suffixIcon: SvgPicture.asset(AppAssets.icEyeClosedSvg),
+                    validator: (text) {
+                      if (text!.isEmpty) return "Please enter a password";
+                      if (text != passwordController.text) {
+                        return "Password does not match";
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 48),
+                  buildSignupButton(),
+                  SizedBox(height: 32),
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Already have an account?",
+                          style: AppTextStyles.grey14Regular,
+                        ),
+                        Text(
+                          "Login",
+                          style: AppTextStyles.blue14SemiBold.copyWith(
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 32),
+                  Text(
+                    "or",
+                    style: AppTextStyles.blue24SemiBold,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 32),
+                  buildGoogleSignInButton(),
+                ],
+              ),
             ),
           ),
         ),
@@ -111,7 +150,7 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  AppButton buildGoogleSigninButton() {
+  AppButton buildGoogleSignInButton() {
     return AppButton(
       title: "Sign up with Google",
       onPress: () {},
@@ -124,8 +163,9 @@ class _SignupScreenState extends State<SignupScreen> {
   AppButton buildSignupButton() => AppButton(
     title: "Sign up",
     onPress: () async {
+      if (!key.currentState!.validate()) return;
       try {
-        ShowLoading(context);
+        showLoading(context);
         final credential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
               email: emailController.text,
@@ -151,7 +191,7 @@ class _SignupScreenState extends State<SignupScreen> {
           message =
               e.message ?? "Something went wrong, please, try again later";
         }
-        ShowMessage(
+        showMessage(
           context,
           message,
           title: "Error",
@@ -161,7 +201,7 @@ class _SignupScreenState extends State<SignupScreen> {
           },
         );
       } catch (e) {
-        ShowMessage(
+        showMessage(
           context,
           "Something went wrong, please, try again later",
           title: "Error",
@@ -173,6 +213,7 @@ class _SignupScreenState extends State<SignupScreen> {
       }
     },
   );
+
   Future<void> createUserInFirestore(UserDm user) async {
     var usersCollection = FirebaseFirestore.instance.collection("Users");
     var emptyDocument = usersCollection.doc(user.id);

@@ -1,5 +1,4 @@
 import 'package:evently_6/ui/data_models/category_dm.dart';
-import 'package:evently_6/ui/data_models/event_dm.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
 import 'package:evently_6/ui/utils/app_constants.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';

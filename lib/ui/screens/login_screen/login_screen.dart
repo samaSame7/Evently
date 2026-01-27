@@ -119,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
     title: "Login",
     onPress: () async {
       try {
-        ShowLoading(context);
+        showLoading(context);
         final credential = await FirebaseAuth.instance
             .signInWithEmailAndPassword(
               email: emailController.text,
@@ -139,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
           message =
               e.message ?? "Something went wrong, please, try again later";
         }
-        ShowMessage(
+        showMessage(
           context,
           message,
           title: "Error",

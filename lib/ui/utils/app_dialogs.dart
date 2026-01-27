@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-ShowLoading(BuildContext context) {
+void showLoading(BuildContext context) {
   showDialog(
     context: context,
     builder: (_) {
@@ -18,7 +18,7 @@ ShowLoading(BuildContext context) {
   );
 }
 
-ShowMessage(
+void showMessage(
   BuildContext context,
   String message, {
   String? title,
