@@ -1,6 +1,10 @@
+import 'package:evently_6/firebase_utils/firestore_utility.dart';
 import 'package:evently_6/ui/data_models/category_dm.dart';
+import 'package:evently_6/ui/data_models/event_dm.dart';
+import 'package:evently_6/ui/data_models/user_dm.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
 import 'package:evently_6/ui/utils/app_constants.dart';
+import 'package:evently_6/ui/utils/app_dialogs.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
 import 'package:evently_6/ui/widgets/app_button.dart';
 import 'package:evently_6/ui/widgets/app_text_field.dart';
@@ -18,8 +22,8 @@ class _AddEventScreenState extends State<AddEventScreen> {
   CategoryDm selectedCategory = AppConstants.customCategories[0];
   DateTime selectedDate = DateTime.now();
   TimeOfDay selectedTime = TimeOfDay.now();
-  TextEditingController title = TextEditingController();
-  TextEditingController description = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,14 +59,17 @@ class _AddEventScreenState extends State<AddEventScreen> {
                       SizedBox(height: 16),
                       Text("Title", style: AppTextStyles.black16Medium),
                       SizedBox(height: 8),
-                      AppTextField(hintText: "Event Title", controller: title),
+                      AppTextField(
+                        hintText: "Event Title",
+                        controller: titleController,
+                      ),
                       SizedBox(height: 16),
                       Text("Description", style: AppTextStyles.black16Medium),
                       SizedBox(height: 8),
                       AppTextField(
                         hintText: "Event Description....",
                         minLine: 4,
-                        controller: description,
+                        controller: descriptionController,
                       ),
                       SizedBox(height: 16),
                       buildChooseDateRow(),
@@ -139,6 +146,29 @@ class _AddEventScreenState extends State<AddEventScreen> {
   );
 
   Widget buildAddEventButton() {
-    return AppButton(onPress: () {}, title: "Add Event");
+    return AppButton(
+      title: "Add Event",
+      onPress: () async {
+        showLoading(context);
+        selectedDate = DateTime(
+          selectedDate.year,
+          selectedDate.month,
+          selectedDate.day,
+          selectedTime.hour,
+          selectedTime.minute,
+        );
+        EventDm event = EventDm(
+          id: "",
+          ownerId: UserDm.currentUser!.id,
+          title: titleController.text,
+          description: descriptionController.text,
+          category: selectedCategory,
+          dateTime: selectedDate,
+        );
+        await createEventInFirestore(event);
+        Navigator.pop(context);
+        Navigator.pop(context);
+      },
+    );
   }
 }

@@ -1,6 +1,6 @@
+import 'package:evently_6/firebase_utils/firestore_utility.dart';
 import 'package:evently_6/ui/data_models/category_dm.dart';
 import 'package:evently_6/ui/data_models/user_dm.dart';
-import 'package:evently_6/ui/utils/app_assets.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
 import 'package:evently_6/ui/utils/app_constants.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
@@ -9,8 +9,23 @@ import 'package:evently_6/ui/widgets/categories_tab_bar.dart';
 import 'package:evently_6/ui/widgets/event_widget.dart';
 import 'package:flutter/material.dart';
 
-class HomeTab extends StatelessWidget {
+class HomeTab extends StatefulWidget {
   const HomeTab({super.key});
+
+  @override
+  State<HomeTab> createState() => _HomeTabState();
+}
+
+class _HomeTabState extends State<HomeTab> {
+  List<EventDm> events = [];
+  List<EventDm> filteredEvents = [];
+  CategoryDm selectedCategory = AppConstants.allCategories[0];
+
+  @override
+  void initState() {
+    super.initState();
+    loadEvents();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,29 +66,21 @@ class HomeTab extends StatelessWidget {
   Widget buildCategoriesTabBar() {
     return CategoriesTabBar(
       categories: AppConstants.allCategories,
-      onClick: (CategoryDm category) {},
+      onClick: (category) {},
     );
   }
 
   Widget buildEventsList() {
-    CategoryDm category = CategoryDm(
-      name: "Sports",
-      imgPath: AppAssets.sportLight,
-      icon: Icons.bike_scooter_sharp,
-    );
-    EventDm event = EventDm(
-      ownerId: "",
-      title: "Sports",
-      description:
-          "my sports my sports my sport sports my sports my sports my sports my sports my sports ",
-      category: category,
-      dateTime: DateTime.now(),
-    );
     return Expanded(
       child: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) => EventWidget(event: event),
+        itemCount: events.length,
+        itemBuilder: (context, index) => EventWidget(event: events[index]),
       ),
     );
+  }
+
+  Future<void> loadEvents() async {
+    events = await getEventsFromFirestore();
+    setState(() {});
   }
 }

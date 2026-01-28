@@ -39,7 +39,7 @@ class EventWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
-        "${event.dateTime.day} Jan",
+        "${event.dateTime.day} : ${event.dateTime.month}",
         style: AppTextStyles.blue18Medium,
       ),
     ),

@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evently_6/firebase_utils/firestore_utility.dart';
 import 'package:evently_6/ui/data_models/user_dm.dart';
 import 'package:evently_6/ui/utils/app_assets.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
@@ -100,19 +100,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  Future<UserDm> getUserFromFirestore(String uid) async {
-    var usersCollection = FirebaseFirestore.instance.collection("Users");
-    DocumentSnapshot snapshot = await usersCollection.doc(uid).get();
-    Map json = snapshot.data() as Map;
-    UserDm user = UserDm(
-      id: uid,
-      name: json['name'],
-      email: emailController.text,
-      phoneNumber: json['phoneNumber'],
-    );
-    return user;
   }
 
   AppButton buildLoginButton() => AppButton(

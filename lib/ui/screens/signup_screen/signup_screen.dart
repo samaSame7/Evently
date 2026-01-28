@@ -1,3 +1,4 @@
+import 'package:evently_6/firebase_utils/firestore_utility.dart';
 import 'package:evently_6/ui/data_models/user_dm.dart';
 import 'package:evently_6/ui/utils/app_assets.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
@@ -9,7 +10,6 @@ import 'package:evently_6/ui/widgets/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -214,15 +214,4 @@ class _SignupScreenState extends State<SignupScreen> {
     },
   );
 
-  Future<void> createUserInFirestore(UserDm user) async {
-    var usersCollection = FirebaseFirestore.instance.collection("Users");
-    var emptyDocument = usersCollection.doc(user.id);
-    emptyDocument.set({
-      'id': user.id,
-      'name': user.name,
-      'phoneNumber': user.phoneNumber,
-      'email': user.email,
-      'favouriteEvents': user.favouriteEvents,
-    });
-  }
 }
