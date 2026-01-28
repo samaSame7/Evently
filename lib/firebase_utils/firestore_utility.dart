@@ -15,7 +15,7 @@ Future<void> createUserInFirestore(UserDm user) async {
   emptyDocument.set(user.toJson());
 }
 
-createEventInFirestore(EventDm event) async {
+Future<void> createEventInFirestore(EventDm event) async {
   CollectionReference collection = FirebaseFirestore.instance.collection(
     "events",
   );
