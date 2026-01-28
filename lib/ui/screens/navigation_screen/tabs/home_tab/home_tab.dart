@@ -66,21 +66,33 @@ class _HomeTabState extends State<HomeTab> {
   Widget buildCategoriesTabBar() {
     return CategoriesTabBar(
       categories: AppConstants.allCategories,
-      onClick: (category) {},
+      onClick: (category) {
+        selectedCategory = category;
+        if (selectedCategory != AppConstants.all) {
+          filteredEvents = events.where((event) {
+            return event.category.name == selectedCategory.name;
+          }).toList();
+        } else {
+          filteredEvents = events;
+        }
+        setState(() {});
+      },
     );
   }
 
   Widget buildEventsList() {
     return Expanded(
       child: ListView.builder(
-        itemCount: events.length,
-        itemBuilder: (context, index) => EventWidget(event: events[index]),
+        itemCount: filteredEvents.length,
+        itemBuilder: (context, index) =>
+            EventWidget(event: filteredEvents[index]),
       ),
     );
   }
 
   Future<void> loadEvents() async {
     events = await getEventsFromFirestore();
+    filteredEvents = events;
     setState(() {});
   }
 }
