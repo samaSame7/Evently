@@ -31,8 +31,8 @@ class _HomeTabState extends State<HomeTab> {
           buildScreenHeader(),
           Text(UserDm.currentUser!.name, style: AppTextStyles.black20SemiBold),
           SizedBox(height: 15),
-          FutureBuilder(
-            future: getEventsFromFirestore(),
+          StreamBuilder(
+            stream: getEventsFromFirestore(),
             builder: (context, snapshot) {
               events = snapshot.data!;
               filterEvents();
