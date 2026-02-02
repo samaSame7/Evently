@@ -36,3 +36,45 @@ Stream<List<EventDm>> getEventsFromFirestore() {
     }).toList();
   });
 }
+
+void updateEventInFirestore(EventDm event, UserDm user) {
+  CollectionReference userCollection = FirebaseFirestore.instance.collection(
+    UserDm.collectionName,
+  );
+  DocumentReference documentReference = userCollection.doc(user.id);
+  documentReference.update({"": "UserDm.currentUser!.name"});
+}
+
+void addEventToFavorite(String eventId, UserDm user) {
+  CollectionReference userCollection = FirebaseFirestore.instance.collection(
+    UserDm.collectionName,
+  );
+  DocumentReference documentReference = userCollection.doc(user.id);
+  List<String> favouriteEvents = List.of(user.favouriteEvents);
+  favouriteEvents.add(eventId);
+  user.favouriteEvents = favouriteEvents;
+  documentReference.update({"favouriteEvents": favouriteEvents});
+}
+
+void removeEventFromFavorite(String eventId, UserDm user) {
+  CollectionReference userCollection = FirebaseFirestore.instance.collection(
+    UserDm.collectionName,
+  );
+  DocumentReference documentReference = userCollection.doc(user.id);
+  user.favouriteEvents.remove(eventId);
+  documentReference.update({"favouriteEvents": user.favouriteEvents});
+}
+
+Future<List<EventDm>> getFavoriteEventsForUSer(UserDm user) async {
+  if (UserDm.currentUser!.favouriteEvents.isEmpty) return [];
+  CollectionReference eventsCollection = FirebaseFirestore.instance.collection(
+    "events",
+  );
+  QuerySnapshot querySnapshot = await eventsCollection
+      .where("id", whereIn: UserDm.currentUser!.favouriteEvents)
+      .get();
+  return querySnapshot.docs.map((doc) {
+    var json = doc.data() as Map<String, dynamic>;
+    return EventDm.fromJson(json);
+  }).toList();
+}

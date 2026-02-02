@@ -34,18 +34,19 @@ class _HomeTabState extends State<HomeTab> {
           StreamBuilder(
             stream: getEventsFromFirestore(),
             builder: (context, snapshot) {
-              events = snapshot.data!;
-              filterEvents();
               if (snapshot.hasError) {
-                return Center(child: Text(snapshot.error.toString()));
+                return Text(snapshot.error.toString());
               } else if (snapshot.hasData) {
+                events = snapshot.data!;
+                filteredEvents = events;
+                filterEvents();
                 return Expanded(
                   child: Column(
                     children: [buildCategoriesTabBar(), buildEventsList()],
                   ),
                 );
               } else {
-                return Center(child: CircularProgressIndicator());
+                return CircularProgressIndicator();
               }
             },
           ),

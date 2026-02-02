@@ -1,12 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:evently_6/firebase_utils/firestore_utility.dart';
+import 'package:evently_6/ui/data_models/user_dm.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
 import 'package:evently_6/ui/data_models/event_dm.dart';
 import 'package:flutter/material.dart';
 
-class EventWidget extends StatelessWidget {
+class EventWidget extends StatefulWidget {
   const EventWidget({super.key, required this.event});
   final EventDm event;
 
+  @override
+  State<EventWidget> createState() => _EventWidgetState();
+}
+
+class _EventWidgetState extends State<EventWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,7 +25,7 @@ class EventWidget extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.asset(event.category.imgPath),
+            child: Image.asset(widget.event.category.imgPath),
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,7 +47,8 @@ class EventWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
-        "${event.dateTime.day} : ${event.dateTime.month}",
+        "${widget.event.dateTime.day} Jan",
+        //"${widget.event.dateTime.day} : ${widget.event.dateTime.month}",
         style: AppTextStyles.blue18Medium,
       ),
     ),
@@ -57,15 +66,35 @@ class EventWidget extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              event.description,
+              widget.event.description,
               style: AppTextStyles.blue14SemiBold,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          Icon(
-            false ? Icons.favorite_outlined : Icons.favorite_border_outlined,
-            color: AppColors.blue,
+          StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection(UserDm.collectionName)
+                .doc(UserDm.currentUser!.id)
+                .snapshots(),
+            builder: (context, snapshot) => InkWell(
+              onTap: () {
+                if (UserDm.currentUser!.favouriteEvents.contains(
+                  widget.event.id,
+                )) {
+                  removeEventFromFavorite(widget.event.id, UserDm.currentUser!);
+                } else {
+                  addEventToFavorite(widget.event.id, UserDm.currentUser!);
+                }
+                setState(() {});
+              },
+              child: Icon(
+                UserDm.currentUser!.favouriteEvents.contains(widget.event.id)
+                    ? Icons.favorite_outlined
+                    : Icons.favorite_border_outlined,
+                color: AppColors.blue,
+              ),
+            ),
           ),
         ],
       ),

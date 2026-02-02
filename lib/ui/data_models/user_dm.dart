@@ -1,30 +1,34 @@
 class UserDm {
   static UserDm? currentUser;
-  final String id;
-  final String name;
-  final String phoneNumber;
-  final String email;
-  final List<String> favouriteEvents;
+  static const String collectionName = "Users";
+  String id;
+  String name;
+  String phoneNumber;
+  String email;
+  List<String> favouriteEvents;
 
-  const UserDm({
+  UserDm({
     required this.id,
     required this.name,
     required this.email,
     required this.phoneNumber,
-    this.favouriteEvents = const[],
+    this.favouriteEvents = const [],
   });
 
-  static UserDm fromJson(Map<String,dynamic> json){
+  static UserDm fromJson(Map<String, dynamic> json) {
+    List<dynamic> favorites = json["favouriteEvents"];
+
     UserDm user = UserDm(
       id: json['id'],
       name: json['name'],
       email: json['email'],
       phoneNumber: json['phoneNumber'],
+      favouriteEvents: favorites.map((id) => id.toString()).toList(),
     );
     return user;
   }
 
-  Map<String,dynamic> toJson(){
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
