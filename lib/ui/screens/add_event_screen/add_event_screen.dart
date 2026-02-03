@@ -29,7 +29,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AppColors.offWhite,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           title: Text("Add event", style: AppTextStyles.blue24SemiBold),

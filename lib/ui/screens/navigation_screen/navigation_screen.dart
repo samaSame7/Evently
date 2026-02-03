@@ -20,7 +20,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: AppColors.offWhite,
         body: tabs[selectedTap],
         floatingActionButton: buildFloatingActionButton(),
         bottomNavigationBar: buildBottomNavigationBar(),
