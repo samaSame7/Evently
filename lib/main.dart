@@ -1,6 +1,6 @@
 import 'package:evently_6/ui/providers/language_provider.dart';
 import 'package:evently_6/ui/providers/theme_provider.dart';
-import 'package:evently_6/ui/screens/login_screen/login_screen.dart';
+import 'package:evently_6/ui/screens/onboarding_screen/onboarding_screen.dart';
 import 'package:evently_6/ui/utils/app_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
     themeProvider = Provider.of(context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: OnboardingScreen(),
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
