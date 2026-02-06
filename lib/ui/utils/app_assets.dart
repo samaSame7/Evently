@@ -25,4 +25,7 @@ abstract class AppAssets {
   static const String onboarding1 = "${base}illustration1.png";
   static const String onboarding2 = "${base}illustration2.png";
   static const String onboarding3 = "${base}illustration3.png";
+  static const String deleteIcon = "${base}ic_delete.png";
+  static const String editIcon = "${base}ic_edit.png";
+  static const String calenderIcon = "${base}ic_calendar.png";
 }

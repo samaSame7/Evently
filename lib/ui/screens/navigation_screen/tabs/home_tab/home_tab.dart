@@ -1,12 +1,14 @@
 import 'package:evently_6/firebase_utils/firestore_utility.dart';
 import 'package:evently_6/ui/data_models/category_dm.dart';
 import 'package:evently_6/ui/data_models/user_dm.dart';
+import 'package:evently_6/ui/screens/details_screen/details_screen.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
 import 'package:evently_6/ui/utils/app_constants.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
 import 'package:evently_6/ui/data_models/event_dm.dart';
 import 'package:evently_6/ui/widgets/categories_tab_bar.dart';
 import 'package:evently_6/ui/widgets/event_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeTab extends StatefulWidget {
@@ -46,7 +48,12 @@ class _HomeTabState extends State<HomeTab> {
                   ),
                 );
               } else {
-                return CircularProgressIndicator();
+                return CupertinoAlertDialog(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [CircularProgressIndicator()],
+                  ),
+                );
               }
             },
           ),
@@ -98,8 +105,18 @@ class _HomeTabState extends State<HomeTab> {
     return Expanded(
       child: ListView.builder(
         itemCount: filteredEvents.length,
-        itemBuilder: (context, index) =>
-            EventWidget(event: filteredEvents[index]),
+        itemBuilder: (context, index) => InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>
+                    DetailsScreen(event: filteredEvents[index]),
+              ),
+            );
+          },
+          child: EventWidget(event: filteredEvents[index]),
+        ),
       ),
     );
   }
