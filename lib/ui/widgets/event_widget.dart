@@ -5,6 +5,7 @@ import 'package:evently_6/ui/utils/app_colors.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
 import 'package:evently_6/ui/data_models/event_dm.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class EventWidget extends StatefulWidget {
   const EventWidget({super.key, required this.event});
@@ -46,9 +47,9 @@ class _EventWidgetState extends State<EventWidget> {
         color: AppColors.offWhite,
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Text(
-        "${widget.event.dateTime.day} Jan",
-        //"${widget.event.dateTime.day} : ${widget.event.dateTime.month}",
+      child:
+      Text(
+        "${widget.event.dateTime.day} ${DateFormat('MMM').format(widget.event.dateTime)}",
         style: AppTextStyles.blue18Medium,
       ),
     ),

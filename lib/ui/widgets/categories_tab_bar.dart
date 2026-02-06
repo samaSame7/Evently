@@ -1,4 +1,5 @@
 import 'package:evently_6/ui/data_models/category_dm.dart';
+import 'package:evently_6/ui/data_models/event_dm.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +7,13 @@ import 'package:flutter/material.dart';
 class CategoriesTabBar extends StatefulWidget {
   final List<CategoryDm> categories;
   final Function(CategoryDm) onClick;
+  final EventDm? event;
 
   const CategoriesTabBar({
     super.key,
     required this.categories,
     required this.onClick,
+    this.event,
   });
 
   @override
@@ -18,21 +21,36 @@ class CategoriesTabBar extends StatefulWidget {
 }
 
 class _CategoriesTabBarState extends State<CategoriesTabBar> {
-  int selectedCategory = 0;
+  int selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    final eventCategory = widget.event?.category;
+    if (eventCategory != null) {
+      final foundIndex = widget.categories.indexWhere(
+        (cat) => cat.name == eventCategory.name,
+      );
+      if (foundIndex != -1) {
+        selectedIndex = foundIndex;
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: widget.categories.length,
+      initialIndex: selectedIndex,
       child: TabBar(
         tabs: widget.categories.map(mapCategoryToWidget).toList(),
         isScrollable: true,
         indicatorColor: Colors.transparent,
-        padding: EdgeInsets.all(0),
         onTap: (index) {
-          selectedCategory = index;
+          setState(() {
+            selectedIndex = index;
+          });
           widget.onClick(widget.categories[index]);
-          setState(() {});
         },
         dividerColor: Colors.transparent,
         tabAlignment: TabAlignment.start,
@@ -41,7 +59,8 @@ class _CategoriesTabBarState extends State<CategoriesTabBar> {
   }
 
   Widget mapCategoryToWidget(CategoryDm category) {
-    bool isSelected = selectedCategory == widget.categories.indexOf(category);
+    final isSelected = selectedIndex == widget.categories.indexOf(category);
+
     return Container(
       padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       decoration: BoxDecoration(

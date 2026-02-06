@@ -37,14 +37,6 @@ Stream<List<EventDm>> getEventsFromFirestore() {
   });
 }
 
-void updateEventInFirestore(EventDm event, UserDm user) {
-  CollectionReference userCollection = FirebaseFirestore.instance.collection(
-    UserDm.collectionName,
-  );
-  DocumentReference documentReference = userCollection.doc(user.id);
-  documentReference.update({"": "UserDm.currentUser!.name"});
-}
-
 void addEventToFavorite(String eventId, UserDm user) {
   CollectionReference userCollection = FirebaseFirestore.instance.collection(
     UserDm.collectionName,
@@ -78,3 +70,17 @@ Future<List<EventDm>> getFavoriteEventsForUSer(UserDm user) async {
     return EventDm.fromJson(json);
   }).toList();
 }
+
+Future<void> updateEventInFirestore(EventDm event) async{
+  CollectionReference eventCollection = FirebaseFirestore.instance.collection(
+    "events",
+  );
+  DocumentReference documentReference = eventCollection.doc(event.id);
+  await documentReference.update(event.toJson());
+}
+
+// CollectionReference userCollection = FirebaseFirestore.instance.collection(
+//   UserDm.collectionName,
+// );
+// DocumentReference documentReference = userCollection.doc(user.id);
+// documentReference.update({"": "UserDm.currentUser!.name"});

@@ -4,6 +4,7 @@ import 'package:evently_6/ui/utils/app_colors.dart';
 import 'package:evently_6/ui/utils/app_routes.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class DetailsScreen extends StatelessWidget {
   final EventDm event;
@@ -22,9 +23,10 @@ class DetailsScreen extends StatelessWidget {
               SizedBox(height: 16),
               SizedBox(
                 height: MediaQuery.of(context).size.height * .27,
-                child: ClipRRect(clipBehavior: Clip.hardEdge,
+                child: ClipRRect(
+                  clipBehavior: Clip.hardEdge,
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(event.category.imgPath,fit: BoxFit.fill,),
+                  child: Image.asset(event.category.imgPath, fit: BoxFit.fill),
                 ),
               ),
               SizedBox(height: 16),
@@ -56,7 +58,7 @@ class DetailsScreen extends StatelessWidget {
                     Column(
                       children: [
                         Text(
-                          "${event.dateTime.day} Jan",
+                          "${event.dateTime.day} ${DateFormat('MMM').format(event.dateTime)}",
                           style: AppTextStyles.black16Medium,
                         ),
                         //Text("${event.dateTime.day} ${event.dateTime.month}",style: AppTextStyles.black16Medium,),
@@ -119,7 +121,10 @@ class DetailsScreen extends StatelessWidget {
         Spacer(),
         InkWell(
           onTap: () {
-            Navigator.pushReplacement(context, AppRoutes.loginScreen);
+            Navigator.pushReplacement(
+              context,
+              AppRoutes.getEditEventScreen(event),
+            );
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -133,7 +138,7 @@ class DetailsScreen extends StatelessWidget {
         SizedBox(width: 8),
         InkWell(
           onTap: () {
-            Navigator.pushReplacement(context, AppRoutes.loginScreen);
+            Navigator.pop(context);
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),

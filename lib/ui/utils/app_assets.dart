@@ -7,7 +7,7 @@ abstract class AppAssets {
   static const String birthdayDark = "${base}Birthday.png";
   static const String birthdayLight = "${base}Birthday-1.png";
   static const String bookClubDark = "${base}Book Club.png";
-  static const String bookClubLight = "${base}images/Book Club-1.png";
+  static const String bookClubLight = "${base}Book Club-1.png";
   static const String exhibitionDark = "${base}Exhibition.png";
   static const String exhibitionLight = "${base}Exhibition-1.png";
   static const String icAllSvg = "${base}ic_all.svg";

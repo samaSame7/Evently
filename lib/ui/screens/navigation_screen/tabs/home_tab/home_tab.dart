@@ -1,9 +1,9 @@
 import 'package:evently_6/firebase_utils/firestore_utility.dart';
 import 'package:evently_6/ui/data_models/category_dm.dart';
 import 'package:evently_6/ui/data_models/user_dm.dart';
-import 'package:evently_6/ui/screens/details_screen/details_screen.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
 import 'package:evently_6/ui/utils/app_constants.dart';
+import 'package:evently_6/ui/utils/app_routes.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
 import 'package:evently_6/ui/data_models/event_dm.dart';
 import 'package:evently_6/ui/widgets/categories_tab_bar.dart';
@@ -48,11 +48,16 @@ class _HomeTabState extends State<HomeTab> {
                   ),
                 );
               } else {
-                return CupertinoAlertDialog(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [CircularProgressIndicator()],
-                  ),
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CupertinoAlertDialog(
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [CircularProgressIndicator()],
+                      ),
+                    ),
+                  ],
                 );
               }
             },
@@ -103,21 +108,29 @@ class _HomeTabState extends State<HomeTab> {
 
   Widget buildEventsList() {
     return Expanded(
-      child: ListView.builder(
-        itemCount: filteredEvents.length,
-        itemBuilder: (context, index) => InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    DetailsScreen(event: filteredEvents[index]),
+      child: filteredEvents.isEmpty
+          ? Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Add your first event and invite the fun 🎉",
+                  style: AppTextStyles.blue24SemiBold,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            )
+          : ListView.builder(
+              itemCount: filteredEvents.length,
+              itemBuilder: (context, index) => InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    AppRoutes.getDetailsEventScreen(filteredEvents[index])
+                  );
+                },
+                child: EventWidget(event: filteredEvents[index]),
               ),
-            );
-          },
-          child: EventWidget(event: filteredEvents[index]),
-        ),
-      ),
+            ),
     );
   }
 }

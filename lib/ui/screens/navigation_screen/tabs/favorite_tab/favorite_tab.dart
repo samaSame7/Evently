@@ -1,6 +1,7 @@
 import 'package:evently_6/firebase_utils/firestore_utility.dart';
 import 'package:evently_6/ui/data_models/event_dm.dart';
 import 'package:evently_6/ui/data_models/user_dm.dart';
+import 'package:evently_6/ui/utils/app_routes.dart';
 import 'package:evently_6/ui/widgets/event_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,15 @@ class FavoriteTab extends StatelessWidget {
     return Expanded(
       child: ListView.builder(
         itemCount: events.length,
-        itemBuilder: (context, index) => EventWidget(event: events[index]),
+        itemBuilder: (context, index) => InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              AppRoutes.getDetailsEventScreen(events[index]),
+            );
+          },
+          child: EventWidget(event: events[index]),
+        ),
       ),
     );
   }

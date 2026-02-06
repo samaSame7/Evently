@@ -41,4 +41,22 @@ class EventDm {
       'dateTime': dateTime,
     };
   }
+
+  EventDm copyWith({
+    String? id,
+    String? ownerId,
+    String? title,
+    String? description,
+    CategoryDm? category,
+    DateTime? dateTime,
+  }) {
+    return EventDm(
+      id: id ?? this.id,
+      ownerId: ownerId ?? this.ownerId,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      category: category ?? this.category,
+      dateTime: dateTime ?? this.dateTime,
+    );
+  }
 }
