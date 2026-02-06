@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is off -->
+    <string name="app_name">evently_6</string>
+    <string name="default_web_client_id" translatable="false">1026470521370-pggpe65u5t5ac18h6vhifsdi0o54fqvq.apps.googleusercontent.com</string>
+<!--    <string name="default_web_client_id">1026470521370-pggpe65u5t5ac18h6vhifsdi0o54fqvq.apps.googleusercontent.com</string>-->
     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <!-- Show a splash screen on the activity. Automatically removed when
              the Flutter engine draws its first frame -->

@@ -1,15 +1,11 @@
-import 'package:evently_6/firebase_utils/firestore_utility.dart';
-import 'package:evently_6/ui/data_models/user_dm.dart';
+import 'package:evently_6/firebase_utils/auth_services.dart';
 import 'package:evently_6/ui/utils/app_assets.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
-import 'package:evently_6/ui/utils/app_dialogs.dart';
-import 'package:evently_6/ui/utils/app_routes.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
 import 'package:evently_6/ui/widgets/app_button.dart';
 import 'package:evently_6/ui/widgets/app_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -139,7 +135,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 32),
-                  buildGoogleSignInButton(),
+                  buildGoogleSignupButton(),
                 ],
               ),
             ),
@@ -149,13 +145,20 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  AppButton buildGoogleSignInButton() {
+  AppButton buildGoogleSignupButton() {
     return AppButton(
       title: "Sign up with Google",
-      onPress: () {},
       backColor: AppColors.white,
       textStyle: AppTextStyles.blue18Medium,
-      icon: Icon(Icons.g_mobiledata_outlined),
+      icon: const Icon(Icons.g_mobiledata_outlined),
+      onPress: () async {
+        await signUpWithGoogle(
+          context,
+          emailController: emailController,
+          nameController: nameController,
+          phoneController: phoneController,
+        );
+      },
     );
   }
 
@@ -163,54 +166,13 @@ class _SignupScreenState extends State<SignupScreen> {
     title: "Sign up",
     onPress: () async {
       if (!key.currentState!.validate()) return;
-      try {
-        showLoading(context);
-        final credential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-              email: emailController.text,
-              password: passwordController.text,
-            );
-        UserDm.currentUser = UserDm(
-          id: credential.user!.uid,
-          name: nameController.text,
-          email: emailController.text,
-          phoneNumber: phoneController.text,
-        );
-        createUserInFirestore(UserDm.currentUser!);
-        Navigator.pop(context);
-        Navigator.push(context, AppRoutes.navigationScreen);
-      } on FirebaseAuthException catch (e) {
-        Navigator.pop(context);
-        var message = "";
-        if (e.code == 'weak-password') {
-          message = 'The password provided is too weak.';
-        } else if (e.code == 'email-already-in-use') {
-          message = 'The account already exists for that email.';
-        } else {
-          message =
-              e.message ?? "Something went wrong, please, try again later";
-        }
-        showMessage(
-          context,
-          message,
-          title: "Error",
-          posText: "Ok",
-          onPosClick: () {
-            Navigator.pop(context);
-          },
-        );
-      } catch (e) {
-        showMessage(
-          context,
-          "Something went wrong, please, try again later",
-          title: "Error",
-          posText: "Ok",
-          onPosClick: () {
-            Navigator.pop(context);
-          },
-        );
-      }
+      await signUpWithEmailPassword(
+        context,
+        phoneController: phoneController,
+        nameController: nameController,
+        emailController: emailController,
+        passwordController: passwordController,
+      );
     },
   );
-
 }

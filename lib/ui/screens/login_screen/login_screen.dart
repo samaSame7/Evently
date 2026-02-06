@@ -1,13 +1,10 @@
-import 'package:evently_6/firebase_utils/firestore_utility.dart';
-import 'package:evently_6/ui/data_models/user_dm.dart';
+import 'package:evently_6/firebase_utils/auth_services.dart';
 import 'package:evently_6/ui/utils/app_assets.dart';
 import 'package:evently_6/ui/utils/app_colors.dart';
-import 'package:evently_6/ui/utils/app_dialogs.dart';
 import 'package:evently_6/ui/utils/app_routes.dart';
 import 'package:evently_6/ui/utils/app_styles.dart';
 import 'package:evently_6/ui/widgets/app_button.dart';
 import 'package:evently_6/ui/widgets/app_text_field.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -88,13 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 48),
-                AppButton(
-                  title: "Login with Google",
-                  onPress: () {},
-                  backColor: AppColors.white,
-                  textStyle: AppTextStyles.blue18Medium,
-                  icon: Icon(Icons.g_mobiledata_outlined),
-                ),
+                buildGoogleButton(),
               ],
             ),
           ),
@@ -106,37 +97,23 @@ class _LoginScreenState extends State<LoginScreen> {
   AppButton buildLoginButton() => AppButton(
     title: "Login",
     onPress: () async {
-      try {
-        showLoading(context);
-        final credential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
-              email: emailController.text,
-              password: passwordController.text,
-            );
-        UserDm.currentUser = await getUserFromFirestore(credential.user!.uid);
-        Navigator.pop(context);
-        Navigator.push(context, AppRoutes.navigationScreen);
-      } on FirebaseAuthException catch (e) {
-        Navigator.pop(context);
-        var message = "";
-        if (e.code == 'user-not-found') {
-          message = 'No user found for that email.';
-        } else if (e.code == 'wrong-password') {
-          message = 'Wrong password provided for that user.';
-        } else {
-          message =
-              e.message ?? "Something went wrong, please, try again later";
-        }
-        showMessage(
-          context,
-          message,
-          title: "Error",
-          posText: "Ok",
-          onPosClick: () {
-            Navigator.pop(context);
-          },
-        );
-      }
+      await signInWithEmailPassword(
+        context,
+        emailController: emailController,
+        passwordController: passwordController,
+      );
     },
   );
+
+  AppButton buildGoogleButton() {
+    return AppButton(
+      title: "Login with Google",
+      backColor: AppColors.white,
+      textStyle: AppTextStyles.blue18Medium,
+      icon: Icon(Icons.g_mobiledata_outlined),
+      onPress: () async {
+        await signInWithGoogle(context);
+      },
+    );
+  }
 }

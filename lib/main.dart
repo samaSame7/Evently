@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'firebase_options.dart';
+import 'firebase_utils/auth_services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,7 @@ void main() async {
       ),
     ),
   );
+  await initGoogleSignIn();
 }
 
 class MyApp extends StatefulWidget {
